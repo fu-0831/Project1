@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class TestEditorExpansion : MonoBehaviour
+public class TestEditorExpansion : EditorWindow
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [MenuItem("Editor/Test/TestEditorWindow")]
+    static public void CreateWindow()
+    { 
+        EditorWindow.GetWindow<TestEditorExpansion>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnGUI()
     {
-        
+        GUILayout.Label("ƒeƒXƒg");
     }
 }
