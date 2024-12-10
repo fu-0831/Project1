@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroneBase : MonoBehaviour
+public class ShortRangeDroneController : UnitBase
 {
+    public override void SetUp()
+    {
+        base.SetUp();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
