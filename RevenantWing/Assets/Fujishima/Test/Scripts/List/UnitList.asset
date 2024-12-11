@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc026f3da61c7a4b88a7bf7134d2038, type: 3}
   m_Name: UnitList
   m_EditorClassIdentifier: 
-  Units: []
+  Units:
+  - {fileID: -651889205023450654, guid: 5a5da7f09acd0ca4e8ddff2b6602ae43, type: 3}
+  - {fileID: -4723927527266923585, guid: 0f3b5e4be9e90f341ae868ba7b774105, type: 3}
+  - {fileID: -4536451423498540234, guid: 8023ed3b620d88e488bd970aa3993d9b, type: 3}
+  - {fileID: -19999752986331963, guid: 59f2d41cbd2270143a2b49402b6d821a, type: 3}
