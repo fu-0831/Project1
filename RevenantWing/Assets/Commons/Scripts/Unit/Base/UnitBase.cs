@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class UnitBase : MonoBehaviour, IUnitPositionProvider
+public abstract class UnitBase : MonoBehaviour
 {
     [SerializeField] protected UnitID unitID;
 

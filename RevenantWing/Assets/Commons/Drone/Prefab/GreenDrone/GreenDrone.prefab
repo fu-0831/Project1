@@ -95,6 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3428502863640682690}
   - component: {fileID: -4536451423498540234}
+  - component: {fileID: -2858117560725861549}
   m_Layer: 0
   m_Name: GreenDrone
   m_TagString: Untagged
@@ -131,3 +132,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitID: 21
+--- !u!195 &-2858117560725861549
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2807737364565309122}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 0
+  m_Acceleration: 0
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

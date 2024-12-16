@@ -5,6 +5,7 @@ using UnityEngine;
 public class TestPoolOperation : MonoBehaviour
 {
     [SerializeField] UnitObjectPool pool;
+    [SerializeField] UnitID unitID;
 
     Queue<UnitBase> testUnitQueue = new Queue<UnitBase>();
 
@@ -18,7 +19,7 @@ public class TestPoolOperation : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
-            testUnitQueue.Enqueue(pool.TakeUnit(UnitID.ShieldDrone));
+            testUnitQueue.Enqueue(pool.TakeUnit(unitID));
 
         if (Input.GetKeyDown(KeyCode.K))
         {
