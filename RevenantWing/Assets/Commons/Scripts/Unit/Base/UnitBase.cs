@@ -1,33 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class UnitBase : MonoBehaviour
 {
-    [SerializeField] protected UnitID unitID;
+    //　ユニットID
+    [Tooltip("ユニットID"), SerializeField] protected UnitID unitID;
 
     public UnitID UnitID { get => unitID; }
 
-    private List<UnitBase> units = new List<UnitBase>();
+    // ユニットパラメータ
+    [Tooltip("ユニットパラメータ"), SerializeField] protected UnitBaseParameter unitParameter;
+
+    // ユニットリスト
+    private List<UnitBase> unitList = new List<UnitBase>();
 
     public List<UnitBase> UnitList
     {
-        get => units;
-        set => units = value;
+        get => unitList;
+        set => unitList = value;
     }
 
+    // ステート用変数
     protected IState iState = null;
+
+    // ナビメッシュ
+    protected NavMeshAgent agent = null;
+
+    // 追跡対象トランスフォーム
+    protected Transform targetTransform = null;
 
     public virtual void SetUp() { }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    public virtual void SetTarget(Transform transform) { }
 }

@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPoolOperation : MonoBehaviour
+public class TestUnitOperation : MonoBehaviour
 {
     [SerializeField] UnitObjectPool pool;
     [SerializeField] UnitID unitID;
+
+    [SerializeField] Transform target;
 
     Queue<UnitBase> testUnitQueue = new Queue<UnitBase>();
 
@@ -19,7 +21,12 @@ public class TestPoolOperation : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
-            testUnitQueue.Enqueue(pool.TakeUnit(unitID));
+        {
+            UnitBase testUnit = pool.TakeUnit(unitID);
+            testUnit.SetUp();
+            testUnit.SetTarget(target);
+            testUnitQueue.Enqueue(testUnit);
+        }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -28,6 +35,14 @@ public class TestPoolOperation : MonoBehaviour
             {
                 returnUnit.transform.position = Vector3.zero;
                 pool.ReturnUnit(returnUnit);
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            foreach (UnitBase testUnit in testUnitQueue)
+            {
+                testUnit.SetTarget(target);
             }
         }
     }

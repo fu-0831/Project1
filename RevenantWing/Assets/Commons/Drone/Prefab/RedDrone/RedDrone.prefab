@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitID: 1
+  unitParameter: {fileID: 11400000, guid: e23271f01cf5f314982039003e6a6936, type: 2}
 --- !u!195 &-7533767735197563779
 NavMeshAgent:
   m_ObjectHideFlags: 0
