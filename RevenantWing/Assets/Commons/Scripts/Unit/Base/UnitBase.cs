@@ -30,7 +30,18 @@ public abstract class UnitBase : MonoBehaviour
     // 追跡対象トランスフォーム
     protected Transform targetTransform = null;
 
+    /// <summary>
+    /// ユニットのセットアップを行います
+    /// </summary>
     public virtual void SetUp() { }
 
+    /// <summary>
+    ///  
+    /// </summary>
+    /// <param name="transform"></param>
     public virtual void SetTarget(Transform transform) { }
+
+    public virtual void SetTarget(Vector3 movePos) { }
+
+    public virtual void RemoveTarget() { }
 }
