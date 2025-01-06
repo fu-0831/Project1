@@ -30,27 +30,47 @@ public abstract class UnitBase : MonoBehaviour
     // 追跡対象トランスフォーム
     protected Transform targetTransform = null;
 
+
+
     /// <summary>
-    /// ユニットのセットアップを行います
+    /// ユニットのセットアップを行います。
     /// </summary>
     public virtual void SetUp() { }
 
     /// <summary>
-    ///  移動ターゲット(Transform)を設定します
+    ///  移動ターゲット(Transform)を設定します。
     /// </summary>
     /// <param name="transform"></param>
-    public virtual void SetTarget(Transform transform) { }
+    public void SetTarget(Transform transform)
+    {
+        targetTransform = transform;
+        agent.SetDestination(targetTransform.position);
+    }
 
     /// <summary>
-    /// 移動ポジション(Vector3)を設定します
+    /// 移動ポジション(Vector3)を設定します。
     /// </summary>
     /// <param name="movePos"></param>
-    public virtual void SetTarget(Vector3 movePos) 
+    public void SetTarget(Vector3 movePos)
     {
         agent.SetDestination(movePos);
     }
 
-    public virtual void RemoveTarget() { }
+    /// <summary>
+    /// 移動対象を削除します。
+    /// </summary>
+    public void RemoveTarget()
+    {
+        agent.ResetPath();
+        targetTransform = null;
+    }
 
-    public virtual void UpdateTarget() { }
+    /// <summary>
+    /// 移動対象が敵やオブジェクトの場合、更新します。
+    /// </summary>
+    public void UpdateTarget()
+    {
+        if (targetTransform != null)
+            agent.SetDestination(targetTransform.position);
+    }
 }

@@ -197,6 +197,7 @@ MonoBehaviour:
   pool: {fileID: 464883242}
   unitID: 1
   target: {fileID: 1882559382}
+  targteUpdateTime: 3
 --- !u!4 &1225830580
 Transform:
   m_ObjectHideFlags: 0
