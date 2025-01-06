@@ -36,12 +36,21 @@ public abstract class UnitBase : MonoBehaviour
     public virtual void SetUp() { }
 
     /// <summary>
-    ///  
+    ///  移動ターゲット(Transform)を設定します
     /// </summary>
     /// <param name="transform"></param>
     public virtual void SetTarget(Transform transform) { }
 
-    public virtual void SetTarget(Vector3 movePos) { }
+    /// <summary>
+    /// 移動ポジション(Vector3)を設定します
+    /// </summary>
+    /// <param name="movePos"></param>
+    public virtual void SetTarget(Vector3 movePos) 
+    {
+        agent.SetDestination(movePos);
+    }
 
     public virtual void RemoveTarget() { }
+
+    public virtual void UpdateTarget() { }
 }
