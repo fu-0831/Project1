@@ -21,9 +21,6 @@ public abstract class UnitBase : MonoBehaviour
         set => unitList = value;
     }
 
-    // ステート用変数
-    protected IState iState = null;
-
     // ナビメッシュ
     protected NavMeshAgent agent = null;
 

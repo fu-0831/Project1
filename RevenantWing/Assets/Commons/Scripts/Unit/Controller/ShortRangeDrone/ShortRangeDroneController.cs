@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+#region コントローラー本体
 public class ShortRangeDroneController : UnitBase
 {
     ShortRangeDroneParameter parameter = null;
@@ -14,7 +15,7 @@ public class ShortRangeDroneController : UnitBase
         base.SetUp();
         parameter = unitParameter as ShortRangeDroneParameter;
         agent = GetComponent<NavMeshAgent>();
-        stateManager = new StateManager(iState, agent);
+        stateManager = new StateManager(parameter, this.transform, agent);
     }
 
     // Start is called before the first frame update
@@ -25,29 +26,31 @@ public class ShortRangeDroneController : UnitBase
     // Update is called once per frame
     void Update()
     {
-        if (agent.destination != Vector3.zero)
-        {
-            transform.position += (agent.path.corners[1] - this.transform.position).normalized * parameter.MovePower * Time.deltaTime;
-        }
+
+        stateManager.iState?.OnUpdate();
+        Debug.Log(stateManager.iState);
     }
 
+    #endregion
+
+
+    #region ステート関連
+    // ステートマネージャー
     private class StateManager
     {
         // コントローラーから渡されるステート切り替え反映先
-        IState iState = null;
+        public IState iState = null;
 
-        // 各種ステート----------------------------------------------------------------
-        IdleState idleState = null;
-        MoveState moveState = null;
+        // 各種ステートインスタンス ----------------------------------------------------------------
+        public IdleState idleState = null;
+        public MoveState moveState = null;
 
-        public StateManager(IState iState, NavMeshAgent agent)
+        public StateManager(ShortRangeDroneParameter parameter, Transform transform, NavMeshAgent agent)
         {
-            this.iState = iState;
+            idleState = new IdleState(this, parameter, transform);
+            moveState = new MoveState(this, parameter, transform, agent);
 
-            idleState = new IdleState();
-            moveState = new MoveState(agent);
-
-            iState = moveState;
+            ChangeState(idleState);
         }
 
         public void ChangeState(IState nextState)
@@ -58,40 +61,79 @@ public class ShortRangeDroneController : UnitBase
         }
     }
 
-    private class IdleState : IState
+    // 近距離ドローン基底ステート------------------------------------------------------------------
+    private abstract class ShortRangeDroneStateBase : IState
     {
-        public void OnEnter()
+        protected StateManager stateManager = null;
+        protected ShortRangeDroneParameter parameter = null;
+        protected Transform transform = null;
+
+
+        public ShortRangeDroneStateBase(StateManager stateManager, ShortRangeDroneParameter parameter, Transform transform)
+        {
+            this.stateManager = stateManager;
+            this.parameter = parameter;
+            this.transform = transform;
+        }
+
+        public abstract void OnEnter();
+
+        public abstract void OnExit();
+
+        public abstract void OnUpdate();
+    }
+
+    // 待機ステート--------------------------------------------------------------------------------
+    private class IdleState : ShortRangeDroneStateBase
+    {
+        public IdleState(StateManager stateManager, ShortRangeDroneParameter parameter, Transform transform)
+            : base(stateManager, parameter, transform)
+        {
+
+        }
+
+        public override void OnEnter()
+        {
+            stateManager.ChangeState(stateManager.moveState);
+        }
+
+        public override void OnExit()
         {
         }
 
-        public void OnExit()
-        {
-        }
-
-        public void OnUpdate()
+        public override void OnUpdate()
         {
         }
     }
 
-    private class MoveState : IState
+    // 移動ステート---------------------------------------------------------------------------------
+    private class MoveState : ShortRangeDroneStateBase
     {
         NavMeshAgent agent = null;
 
-        public MoveState(NavMeshAgent agent)
+        public MoveState(StateManager stateManager, ShortRangeDroneParameter parameter, Transform transform, NavMeshAgent agent)
+            : base(stateManager, parameter, transform)
         {
             this.agent = agent;
         }
 
-        public void OnEnter()
+        public override void OnEnter()
         {
         }
 
-        public void OnExit()
+        public override void OnExit()
         {
         }
 
-        public void OnUpdate()
+        public override void OnUpdate()
         {
+            if (agent.destination != Vector3.zero)
+            {
+                transform.position += (agent.path.corners[1] - this.transform.position).normalized * parameter.MovePower * Time.deltaTime;
+                transform.rotation = Quaternion.LookRotation((agent.path.corners[1] - this.transform.position).normalized);
+            }
         }
     }
+
+    #endregion
 }
