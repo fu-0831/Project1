@@ -2,19 +2,31 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitObjectPool : MonoBehaviour, IUnitPool
+public class UnitObjectPool :  IUnitPool
 {
     [Header("オブジェクト設定"), Tooltip("オブジェクトプールパラメータ"), SerializeField]
-    ObjectPoolParameter objectPoolParameter;
+    ObjectPoolParameter parameter;
     [Tooltip("ユニットリスト"), SerializeField] UnitList unitList;
 
     Dictionary<UnitID, Queue<UnitBase>> unitPool = new Dictionary<UnitID, Queue<UnitBase>>();
+
+    // シーン上に配置するオブジェクトの親オブジェクト
+    GameObject parentObject = new GameObject("ObjectPool");
+
+    public UnitObjectPool() { }
+    public UnitObjectPool(ObjectPoolParameter parameter,UnitList unitList)
+    {
+        this.parameter = parameter;
+        this.unitList = unitList;
+    }
 
     /// <summary>
     /// オブジェクトプールのセットアップを行います。オブジェクトプールに登録されているリスト内ユニットの初期生成を行います。
     /// </summary>
     public void SetUp()
     {
+        
+
         foreach (UnitID id in Enum.GetValues(typeof(UnitID)))
         {
             foreach (UnitBase unit in unitList.Units)
@@ -23,12 +35,12 @@ public class UnitObjectPool : MonoBehaviour, IUnitPool
 
                 unitPool.Add(id, new Queue<UnitBase>());
 
-                for (int i = 0; i < objectPoolParameter.InitialCreateCount; i++)
+                for (int i = 0; i < parameter.InitialCreateCount; i++)
                 {
-                    UnitBase createUnit = Instantiate(unit);
+                    UnitBase createUnit = UnityEngine.Object.Instantiate(unit);
                     unitPool[id].Enqueue(createUnit);
                     createUnit.gameObject.SetActive(false);
-                    createUnit.transform.parent = this.transform;
+                    createUnit.transform.parent = parentObject.transform;
                 }
 
             }
@@ -42,8 +54,7 @@ public class UnitObjectPool : MonoBehaviour, IUnitPool
     /// <returns></returns>
     public UnitBase TakeUnit(UnitID unitID)
     {
-        UnitBase lendUnit = null;
-        if (unitPool[unitID].TryDequeue(out lendUnit))
+        if (unitPool[unitID].TryDequeue(out UnitBase lendUnit))
         {
             lendUnit.gameObject.SetActive(true);
             return lendUnit;
@@ -55,8 +66,8 @@ public class UnitObjectPool : MonoBehaviour, IUnitPool
             {
                 if (unitID != unit.UnitID) continue;
 
-                UnitBase createUnit = Instantiate(unit);
-                createUnit.transform.parent = this.transform;
+                UnitBase createUnit = UnityEngine.Object.Instantiate(unit);
+                createUnit.transform.parent = parentObject.transform;
                 return createUnit;
             }
 

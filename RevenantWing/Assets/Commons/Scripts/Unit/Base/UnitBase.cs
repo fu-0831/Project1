@@ -32,7 +32,10 @@ public abstract class UnitBase : MonoBehaviour
     /// <summary>
     /// ユニットのセットアップを行います。
     /// </summary>
-    public virtual void SetUp() { }
+    public virtual void SetUp(Vector3 appearancePosition) 
+    {
+        transform.position = appearancePosition;
+    }
 
     /// <summary>
     ///  移動ターゲット(Transform)を設定します。

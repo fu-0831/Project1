@@ -10,9 +10,9 @@ public class ShortRangeDroneController : UnitBase
 
     StateManager stateManager = null;
 
-    public override void SetUp()
+    public override void SetUp(Vector3 appearancePosition)
     {
-        base.SetUp();
+        base.SetUp(appearancePosition);
         parameter = unitParameter as ShortRangeDroneParameter;
         agent = GetComponent<NavMeshAgent>();
         stateManager = new StateManager(parameter, this.transform, agent);
@@ -127,7 +127,7 @@ public class ShortRangeDroneController : UnitBase
 
         public override void OnUpdate()
         {
-            if (agent.destination != Vector3.zero)
+            if (agent.path.corners.Length > 1)
             {
                 transform.position += (agent.path.corners[1] - this.transform.position).normalized * parameter.MovePower * Time.deltaTime;
                 transform.rotation = Quaternion.LookRotation((agent.path.corners[1] - this.transform.position).normalized);

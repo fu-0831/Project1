@@ -1,23 +1,72 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitSquadManager : IDestinationSetter
+public class UnitSquadManager : ITargetSetter
 {
+    SquadParameter parameter;
+
     List<UnitBase> unitList = new List<UnitBase>();
 
-    public UnitSquadManager(List<UnitBase> unitList)
+    UnitLender unitLender = null;
+
+    Vector3 appearancePosition = Vector3.zero;
+
+    public UnitSquadManager(SquadParameter parameter, UnitLender unitLender, Vector3 appearancePosition)
     {
-        this.unitList = unitList;
+        this.parameter = parameter;
+        this.unitLender = unitLender;
+        this.appearancePosition = appearancePosition;
     }
 
-    public void SetDestination(Vector3 destinationPoint)
+    private void SetUp()
     {
-
+        unitList = unitLender.LendUnits(UnitID.ShortRangeDrone, parameter.GenerateCount);
+        foreach(UnitBase unit in unitList)
+        {
+            unit.SetUp(appearancePosition);
+        }
     }
 
-    public void SetDestination(Transform destinationPoint)
+    /// <summary>
+    /// 各ユニットに移動ポイント(Vector3)を設定します。
+    /// </summary>
+    /// <param name="targetPoint"></param>
+    public void SetSquadTarget(Vector3 targetPoint)
     {
+        foreach (var unit in unitList)
+        {
+            unit.SetTarget(targetPoint);
+        }
+    }
 
+    /// <summary>
+    /// 各ユニットに移動対象(Transform)を設定します。
+    /// </summary>
+    /// <param name="targetPoint"></param>
+    public void SetSquadTarget(Transform targetPoint)
+    {
+        foreach (var unit in unitList)
+        {
+            unit.SetTarget(targetPoint);
+        }
+    }
+
+    public void RemoveSquadTarget()
+    {
+        foreach (var unit in unitList)
+        {
+            unit.RemoveTarget();
+        }
+    }
+
+    /// <summary>
+    /// スクアッドを削除します。
+    /// </summary>
+    public void RemoveSquad()
+    {
+        foreach(UnitBase unit in unitList)
+        {
+            unitLender.ReturnUnit(unit);
+        }
     }
 }
